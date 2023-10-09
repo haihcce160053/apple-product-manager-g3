@@ -1,0 +1,11 @@
+D:\Project\C#\AppleProductSolution\BusinessObject\bin\Debug\net5.0\BusinessObject.deps.json
+D:\Project\C#\AppleProductSolution\BusinessObject\bin\Debug\net5.0\BusinessObject.dll
+D:\Project\C#\AppleProductSolution\BusinessObject\bin\Debug\net5.0\BusinessObject.pdb
+D:\Project\C#\AppleProductSolution\BusinessObject\obj\Debug\net5.0\BusinessObject.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\C#\AppleProductSolution\BusinessObject\obj\Debug\net5.0\BusinessObject.AssemblyInfoInputs.cache
+D:\Project\C#\AppleProductSolution\BusinessObject\obj\Debug\net5.0\BusinessObject.AssemblyInfo.cs
+D:\Project\C#\AppleProductSolution\BusinessObject\obj\Debug\net5.0\BusinessObject.csproj.CoreCompileInputs.cache
+D:\Project\C#\AppleProductSolution\BusinessObject\obj\Debug\net5.0\BusinessObject.dll
+D:\Project\C#\AppleProductSolution\BusinessObject\obj\Debug\net5.0\refint\BusinessObject.dll
+D:\Project\C#\AppleProductSolution\BusinessObject\obj\Debug\net5.0\BusinessObject.pdb
+D:\Project\C#\AppleProductSolution\BusinessObject\obj\Debug\net5.0\ref\BusinessObject.dll
