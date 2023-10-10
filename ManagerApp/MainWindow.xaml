@@ -10,10 +10,11 @@
         ResizeMode="NoResize" Closing="Window_Closing">
 
     <Grid>
-        <Label Content="NAMHAI STORE - MANAGERMENT SYSTEM" HorizontalAlignment="Left" Margin="125,32,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
-        <Button x:Name="btnAccountManager" Content="Account managerment" HorizontalAlignment="Center" Margin="0,117,0,0" VerticalAlignment="Top" Width="780" Height="50" FontSize="16"/>
-        <Button x:Name="btnProductManager" Content="Product managerment" HorizontalAlignment="Center" Margin="0,185,0,0" VerticalAlignment="Top" Width="780" Height="50" FontSize="16"/>
-        <Image HorizontalAlignment="Left" Height="56" Margin="51,22,0,0" VerticalAlignment="Top" Width="64" Source="/apple.png" Stretch="Fill" RenderTransformOrigin="0.5,0.5">
+        <Label Content="NAMHAI STORE - MANAGERMENT SYSTEM" HorizontalAlignment="Left" Margin="138,43,0,0" VerticalAlignment="Top" FontSize="33" FontWeight="Bold"/>
+        <Button x:Name="btnAccountManager" Content="Account managerment" HorizontalAlignment="Center" Margin="0,142,0,0" VerticalAlignment="Top" Width="780" Height="45" FontSize="18"/>
+        <Button x:Name="btnProductManager" Content="Product managerment" HorizontalAlignment="Center" Margin="0,210,0,0" VerticalAlignment="Top" Width="780" Height="45" FontSize="18"/>
+        <Button x:Name="btnProductManager_Copy" Content="Order managerment" HorizontalAlignment="Center" Margin="0,279,0,0" VerticalAlignment="Top" Width="780" Height="45" FontSize="18"/>
+        <Image HorizontalAlignment="Left" Height="65" Margin="51,34,0,0" VerticalAlignment="Top" Width="72" Source="/apple.png" Stretch="Fill" RenderTransformOrigin="0.5,0.5">
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

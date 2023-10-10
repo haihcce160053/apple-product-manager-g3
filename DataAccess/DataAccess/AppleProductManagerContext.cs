@@ -34,24 +34,43 @@ namespace DataAccess.DataAccess
 
             modelBuilder.Entity<Account>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Username);
 
-                entity.ToTable("account");
+                entity.ToTable("accounts");
+
+                entity.Property(e => e.Username)
+                    .HasMaxLength(50)
+                    .HasColumnName("username");
+
+                entity.Property(e => e.Address)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("address");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("email");
+
+                entity.Property(e => e.Fullname)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("fullname");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(100)
+                    .HasMaxLength(50)
                     .HasColumnName("password");
 
-                entity.Property(e => e.Permission)
+                entity.Property(e => e.Phone)
                     .IsRequired()
-                    .HasMaxLength(15)
-                    .HasColumnName("permission");
+                    .HasMaxLength(20)
+                    .HasColumnName("phone");
 
-                entity.Property(e => e.Username)
+                entity.Property(e => e.Type)
                     .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnName("username");
+                    .HasMaxLength(10)
+                    .HasColumnName("type");
             });
 
             modelBuilder.Entity<Product>(entity =>
