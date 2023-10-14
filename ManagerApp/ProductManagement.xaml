@@ -22,7 +22,11 @@
             <Label Content="Sold" FontSize="14"/>
             <TextBox x:Name="txtSold" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Sold, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvProducts}"/>
             <Label Content="Type" FontSize="14"/>
-            <TextBox x:Name="txtType" TextWrapping="Wrap" Width="474" Height="22" Text="{Binding Type, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvProducts}"/>
+            <ComboBox x:Name="cbType" Width="474" Height="22" Text="{Binding Type, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvProducts}">
+                <ComboBoxItem Content="iPhone"/>
+                <ComboBoxItem Content="iPad"/>
+                <ComboBoxItem Content="Macbook"/>
+            </ComboBox>
         </StackPanel>
         <StackPanel Margin="482,142,6,429">
             <Button x:Name="btnAdd" Content="Add" Height="30" Width="180" Margin="0,0,0,20" Click="btnAdd_Click"/>
@@ -45,12 +49,11 @@
         <ListView x:Name="lvProducts" Margin="-12,435,0,0">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Product ID" Width="65" DisplayMemberBinding="{Binding Path=Productid}"/>
+                    <GridViewColumn Header="Product ID" Width="65" DisplayMemberBinding="{Binding Path=ProductId}"/>
                     <GridViewColumn Header="Product Name" Width="220" DisplayMemberBinding="{Binding Path=Name}"/>
                     <GridViewColumn Header="Description" Width="200" DisplayMemberBinding="{Binding Path=Description}"/>
                     <GridViewColumn Header="Quantity" Width="70" DisplayMemberBinding="{Binding Path=Quantity}"/>
-                    <GridViewColumn Header="Sold" Width="60" DisplayMemberBinding="{Binding Path=Sold}"/>
-                    <GridViewColumn Header="Type" Width="120" DisplayMemberBinding="{Binding Path=Type}"/>
+                    <GridViewColumn Header="TypeName" Width="120" DisplayMemberBinding="{Binding Path=TypeName}"/>
                 </GridView>
             </ListView.View>
         </ListView>

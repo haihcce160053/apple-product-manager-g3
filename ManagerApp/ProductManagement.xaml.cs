@@ -28,6 +28,21 @@ namespace ManagerApp
             ProductDAO proDAO = new ProductDAO();
             lvProducts.ItemsSource = proDAO.getProductList();
         }
+        //public void updateListView()
+        //{
+        //    ProductDAO proDAO = new ProductDAO();
+        //    IEnumerable<Product> products = proDAO.getProductList();
+        //    var productNames = products.Select(p => new
+        //    {
+        //        ProductId = p.ProductId,
+        //        Name = p.Name,
+        //        Description = p.Description,
+        //        Quantity = p.Quantity,
+        //        TypeName = p.TypeNavigation.TypeName
+        //    });
+        //    lvProducts.ItemsSource = productNames;
+        //}
+
         private void handleBeforeLoaded()
         {
             updateListView();
@@ -40,12 +55,11 @@ namespace ManagerApp
             {
                 product = new Product
                 {
-                    Productid = int.Parse(txtProductId.Text),
+                    ProductId = int.Parse(txtProductId.Text),
                     Name = txtProductName.Text,
                     Description = txtDescription.Text,
                     Quantity = int.Parse(txtQuantity.Text),
-                    Sold = int.Parse(txtSold.Text),
-                    Type = txtType.Text
+                    Type = int.Parse(cbType.Text)
                 };
             }
             catch (Exception ex)
@@ -124,7 +138,7 @@ namespace ManagerApp
             AccountDAO accountDAO = new AccountDAO();
             Account account = accountDAO.GetAccountByUsername(LoginForm.GlobalUsername);
             MainWindow m = new MainWindow();
-            if (account.Type != 1)
+            if (account.Type == 1)
             {
                 m.Show();
                 Hide();

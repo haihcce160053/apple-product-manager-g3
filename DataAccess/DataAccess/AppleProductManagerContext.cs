@@ -20,7 +20,9 @@ namespace DataAccess.DataAccess
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<AccountType> AccountTypes { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductType> ProductTypes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -97,19 +99,24 @@ namespace DataAccess.DataAccess
             {
                 entity.ToTable("order");
 
-                entity.Property(e => e.Orderid).HasColumnName("orderid");
+                entity.Property(e => e.OrderId).HasColumnName("order_id");
 
-                entity.Property(e => e.Orderdate)
+                entity.Property(e => e.OrderDate)
                     .HasColumnType("date")
-                    .HasColumnName("orderdate");
+                    .HasColumnName("order_date");
 
-                entity.Property(e => e.Productid).HasColumnName("productid");
+                entity.Property(e => e.RequiredDate)
+                    .HasColumnType("date")
+                    .HasColumnName("required_date");
 
-                entity.Property(e => e.Quantity).HasColumnName("quantity");
+                entity.Property(e => e.ShipAddress)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .HasColumnName("ship_address");
 
-                entity.Property(e => e.Totalprice)
-                    .HasColumnType("money")
-                    .HasColumnName("totalprice");
+                entity.Property(e => e.ShippedDate)
+                    .HasColumnType("date")
+                    .HasColumnName("shipped_date");
 
                 entity.Property(e => e.Username)
                     .IsRequired()
@@ -123,32 +130,85 @@ namespace DataAccess.DataAccess
                     .HasConstraintName("FK_order_accounts");
             });
 
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.HasKey(e => new { e.OrderId, e.ProductId });
+
+                entity.ToTable("order_detail");
+
+                entity.Property(e => e.OrderId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("order_id");
+
+                entity.Property(e => e.ProductId).HasColumnName("product_id");
+
+                entity.Property(e => e.Price)
+                    .HasColumnType("money")
+                    .HasColumnName("price");
+
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_order_detail_order");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_order_detail_product");
+            });
+
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.ToTable("products");
+                entity.ToTable("product");
 
-                entity.Property(e => e.Productid)
-                    .ValueGeneratedNever()
-                    .HasColumnName("productid");
+                entity.Property(e => e.ProductId).HasColumnName("product_id");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasMaxLength(1000)
                     .HasColumnName("description");
 
+                entity.Property(e => e.Image)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .HasColumnName("image");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(500)
                     .HasColumnName("name");
 
+                entity.Property(e => e.Price)
+                    .HasColumnType("money")
+                    .HasColumnName("price");
+
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
-                entity.Property(e => e.Sold).HasColumnName("sold");
+                entity.Property(e => e.Type).HasColumnName("type");
 
-                entity.Property(e => e.Type)
+                entity.HasOne(d => d.TypeNavigation)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.Type)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_product_product_type");
+            });
+
+            modelBuilder.Entity<ProductType>(entity =>
+            {
+                entity.HasKey(e => e.TypeId);
+
+                entity.ToTable("product_type");
+
+                entity.Property(e => e.TypeId).HasColumnName("type_id");
+
+                entity.Property(e => e.TypeName)
                     .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnName("type");
+                    .HasMaxLength(50)
+                    .HasColumnName("type_name");
             });
 
             OnModelCreatingPartial(modelBuilder);

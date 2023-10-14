@@ -157,7 +157,7 @@ namespace ManagerApp {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ManagerApp;V1.0.0.0;component/accountmanagement.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ManagerApp;component/accountmanagement.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\AccountManagement.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

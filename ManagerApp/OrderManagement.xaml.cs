@@ -54,7 +54,7 @@ namespace ManagerApp
             AccountDAO accountDAO = new AccountDAO();
             Account account = accountDAO.GetAccountByUsername(LoginForm.GlobalUsername);
             MainWindow m = new MainWindow();
-            if (account.Type != 1)
+            if (account.Type == 1)
             {
                 m.Show();
                 Hide();

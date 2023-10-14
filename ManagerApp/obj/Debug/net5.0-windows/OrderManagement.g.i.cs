@@ -77,7 +77,7 @@ namespace ManagerApp {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ManagerApp;V1.0.0.0;component/ordermanagement.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ManagerApp;component/ordermanagement.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\OrderManagement.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

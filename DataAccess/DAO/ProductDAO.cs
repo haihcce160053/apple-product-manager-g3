@@ -32,7 +32,7 @@ namespace DataAccess.DAO
             try
             {
                 using var context = new AppleProductManagerContext();
-                product = context.Products.SingleOrDefault(c => c.Productid == id);
+                product = context.Products.SingleOrDefault(c => c.ProductId == id);
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace DataAccess.DAO
         {
             try
             {
-                Product _product = getProductByID(product.Productid);
+                Product _product = getProductByID(product.ProductId);
                 if (_product == null)
                 {
                     var context = new AppleProductManagerContext();
@@ -67,7 +67,7 @@ namespace DataAccess.DAO
         {
             try
             {
-                Product _product = getProductByID(product.Productid);
+                Product _product = getProductByID(product.ProductId);
                 if (_product != null)
                 {
                     var context = new AppleProductManagerContext();
@@ -89,7 +89,7 @@ namespace DataAccess.DAO
         {
             try
             {
-                Product _product = getProductByID(product.Productid);
+                Product _product = getProductByID(product.ProductId);
                 if (_product != null)
                 {
                     var context = new AppleProductManagerContext();

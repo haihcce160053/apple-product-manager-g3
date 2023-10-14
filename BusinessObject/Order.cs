@@ -7,13 +7,19 @@ namespace DataAccess.DataAccess
 {
     public partial class Order
     {
-        public int Orderid { get; set; }
+        public Order()
+        {
+            OrderDetails = new HashSet<OrderDetail>();
+        }
+
+        public int OrderId { get; set; }
         public string Username { get; set; }
-        public DateTime Orderdate { get; set; }
-        public int Productid { get; set; }
-        public int Quantity { get; set; }
-        public decimal Totalprice { get; set; }
+        public DateTime OrderDate { get; set; }
+        public DateTime RequiredDate { get; set; }
+        public DateTime ShippedDate { get; set; }
+        public string ShipAddress { get; set; }
 
         public virtual Account UsernameNavigation { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
