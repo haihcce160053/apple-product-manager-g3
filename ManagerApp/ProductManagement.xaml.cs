@@ -23,25 +23,27 @@ namespace ManagerApp
             InitializeComponent();
             handleBeforeLoaded();
         }
-        public void updateListView()
-        {
-            ProductDAO proDAO = new ProductDAO();
-            lvProducts.ItemsSource = proDAO.getProductList();
-        }
+
         //public void updateListView()
         //{
         //    ProductDAO proDAO = new ProductDAO();
-        //    IEnumerable<Product> products = proDAO.getProductList();
-        //    var productNames = products.Select(p => new
-        //    {
-        //        ProductId = p.ProductId,
-        //        Name = p.Name,
-        //        Description = p.Description,
-        //        Quantity = p.Quantity,
-        //        TypeName = p.TypeNavigation.TypeName
-        //    });
-        //    lvProducts.ItemsSource = productNames;
+        //    lvProducts.ItemsSource = proDAO.getProductList();
         //}
+
+        public void updateListView()
+        {
+            ProductDAO proDAO = new ProductDAO();
+            IEnumerable<Product> products = proDAO.getProductList();
+            var productNames = products.Select(p => new
+            {
+                ProductId = p.ProductId,
+                Name = p.Name,
+                Description = p.Description,
+                Quantity = p.Quantity,
+                TypeName = p.TypeNavigation != null ? p.TypeNavigation.TypeName : null
+            });
+            lvProducts.ItemsSource = productNames;
+        }
 
         private void handleBeforeLoaded()
         {

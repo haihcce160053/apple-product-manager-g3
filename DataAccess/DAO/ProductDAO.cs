@@ -16,7 +16,7 @@ namespace DataAccess.DAO
             try
             {
                 var context = new AppleProductManagerContext();
-                products = context.Products.ToList();
+                products = context.Products.Include(p => p.TypeNavigation).ToList();
             }
             catch (Exception ex)
             {

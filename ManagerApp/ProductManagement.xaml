@@ -53,7 +53,7 @@
                     <GridViewColumn Header="Product Name" Width="220" DisplayMemberBinding="{Binding Path=Name}"/>
                     <GridViewColumn Header="Description" Width="200" DisplayMemberBinding="{Binding Path=Description}"/>
                     <GridViewColumn Header="Quantity" Width="70" DisplayMemberBinding="{Binding Path=Quantity}"/>
-                    <GridViewColumn Header="TypeName" Width="120" DisplayMemberBinding="{Binding Path=TypeName}"/>
+                    <GridViewColumn Header="Type Name" Width="120" DisplayMemberBinding="{Binding Path=TypeName}"/>
                 </GridView>
             </ListView.View>
         </ListView>
