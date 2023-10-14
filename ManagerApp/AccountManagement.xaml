@@ -54,7 +54,7 @@
                     <GridViewColumn Header="Phone" Width="170" DisplayMemberBinding="{Binding Path=Phone}"/>
                     <GridViewColumn Header="Email" Width="170" DisplayMemberBinding="{Binding Path=Email}"/>
                     <GridViewColumn Header="Address" Width="170" DisplayMemberBinding="{Binding Path=Address}"/>
-                    <GridViewColumn Header="Type" Width="80" DisplayMemberBinding="{Binding Path=Type}"/>
+                    <GridViewColumn Header="Type" Width="80" DisplayMemberBinding="{Binding Path=TypeName}"/>
                 </GridView>
             </ListView.View>
         </ListView>

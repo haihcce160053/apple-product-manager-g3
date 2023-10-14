@@ -40,7 +40,7 @@ namespace DataAccess.DAO
             try
             {
                 var myStockDB = new AppleProductManagerContext();
-                account = myStockDB.Accounts.ToList();
+                account = myStockDB.Accounts.Include(p => p.TypeNavigation).ToList();
             }
             catch (Exception ex)
             {

@@ -27,11 +27,28 @@ namespace ManagerApp
             handleBeforeLoaded();
         }
 
+        //public void updateListView()
+        //{
+        //    AccountDAO orDAO = new AccountDAO();
+        //    lvAccount.ItemsSource = orDAO.GetAccount();
+        //}
         public void updateListView()
         {
-            AccountDAO orDAO = new AccountDAO();
-            lvAccount.ItemsSource = orDAO.GetAccount();
+            AccountDAO accDAO = new AccountDAO();
+            IEnumerable<Account> accounts = accDAO.GetAccount();
+            var productNames = accounts.Select(p => new
+            {
+                Username = p.Username,
+                Password = p.Password,
+                Fullname = p.Fullname,
+                Phone = p.Phone,
+                Email = p.Email,
+                Address = p.Address,
+                TypeName = p.TypeNavigation != null ? p.TypeNavigation.Name : null
+            });
+            lvAccount.ItemsSource = productNames;
         }
+
         private void handleBeforeLoaded()
         {
             updateListView();
