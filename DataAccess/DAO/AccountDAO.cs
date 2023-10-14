@@ -72,7 +72,7 @@ namespace DataAccess.DAO
                 if (_account == null)
                 {
                     var myStockDB = new AppleProductManagerContext();
-                    myStockDB.Accounts.Add(_account);
+                    myStockDB.Accounts.Add(account);
                     myStockDB.SaveChanges();
                 }
                 else
@@ -127,6 +127,29 @@ namespace DataAccess.DAO
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        public bool IsUserNameExists(string username, string email)
+        {
+            using (var context = new AppleProductManagerContext())
+            {
+                return context.Accounts.Any(m => m.Username == username || m.Email == email);
+            }
+        }
+
+        public List<Account> SearchAccByUsername(string proName)
+        {
+            try
+            {
+                var context = new AppleProductManagerContext();
+                List<Account> pro = context.Accounts
+                    .Where(p => p.Username.Contains(proName)).ToList();
+                return pro;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error has occurred!");
             }
         }
     }

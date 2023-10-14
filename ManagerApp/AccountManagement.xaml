@@ -1,0 +1,62 @@
+﻿<Window x:Class="ManagerApp.AccountManagement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManagerApp"
+        mc:Ignorable="d"
+        Title="Account Management" Height="800" Width="1150"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Grid>
+        <Label Content="ACCOUNT MANAGEMENT" FontSize="33" FontWeight="Bold" HorizontalAlignment="Left" Margin="404,8,0,677"/>
+        <StackPanel Margin="131,62,512,342">
+            <Label Content="User Name" FontSize="14" RenderTransformOrigin="-0.945,0.606"/>
+            <TextBox x:Name="txtUserName" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Username, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvAccount}"/>
+            <Label Content="Password" FontSize="14"/>
+            <TextBox x:Name="txtPassword" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Password, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvAccount}"/>
+            <Label Content="Full Name" FontSize="14"/>
+            <TextBox x:Name="txtFullName" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Fullname, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvAccount}"/>
+            <Label Content="Phone" FontSize="14" RenderTransformOrigin="0.472,1.889"/>
+            <TextBox x:Name="txtPhone" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Phone, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvAccount}"/>
+            <Label Content="Email" FontSize="14"/>
+            <TextBox x:Name="txtEmail" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Email, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvAccount}"/>
+            <Label Content="Address" FontSize="14"/>
+            <TextBox x:Name="txtAddress" TextWrapping="Wrap" Width="474" Height="22" Text="{Binding Address, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvAccount}"/>
+            <Label Content="Type" FontSize="14"/>
+            <TextBox x:Name="txtType" TextWrapping="Wrap" Width="474" Height="22" Text="{Binding Type, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvAccount}"/>
+
+        </StackPanel>
+        <StackPanel Margin="750,145,186,425">
+            <Button x:Name="btnAdd" Content="Add" Height="30" Width="180" Margin="0,0,0,20" Click="btnAdd_Click" />
+            <Button x:Name="btnUpdate" Content="Update" Height="30" Width="180" Margin="0,0,0,20" Click="btnUpdate_Click" />
+            <Button x:Name="btnDelete" Content="Delete" Height="30" Width="180" Margin="0,0,0,20" Click="btnDelete_Click" />
+            <Button x:Name="btnBack" Content="Back To Menu" Height="30" Width="180" Click="btnBack_Click"/>
+        </StackPanel>
+        <Image HorizontalAlignment="Left" Height="58" Margin="332,1,0,0" VerticalAlignment="Top" Width="74" Source="/apple.png" Stretch="Fill" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="0.46"/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="-0.325"/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Label Content="Search By UserName:" HorizontalAlignment="Left" Margin="333,429,0,0" VerticalAlignment="Top" Width="175" FontSize="14"/>
+        <TextBox x:Name="txtSearch" HorizontalAlignment="Left" Height="28" Margin="508,430,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" FontSize="14" TextChanged="txtSearch_TextChanged"/>
+        <ListView x:Name="lvAccount" Margin="0,476,0,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="UserName" Width="170" DisplayMemberBinding="{Binding Path=Username}"/>
+                    <GridViewColumn Header="Password" Width="170" DisplayMemberBinding="{Binding Path=Password}"/>
+                    <GridViewColumn Header="Full Name" Width="170" DisplayMemberBinding="{Binding Path=Fullname}"/>
+                    <GridViewColumn Header="Phone" Width="170" DisplayMemberBinding="{Binding Path=Phone}"/>
+                    <GridViewColumn Header="Email" Width="170" DisplayMemberBinding="{Binding Path=Email}"/>
+                    <GridViewColumn Header="Address" Width="170" DisplayMemberBinding="{Binding Path=Address}"/>
+                    <GridViewColumn Header="Type" Width="80" DisplayMemberBinding="{Binding Path=Type}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>

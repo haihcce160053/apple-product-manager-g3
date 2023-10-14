@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET5_0;NETCOREAPP
 D:\Project\C#\AppleProductSolution\ManagerApp\App.xaml
-2-874545204
+51534005520
 
-4-1387046998
+7-420580823
 2221619451636
-LoginForm.xaml;MainWindow.xaml;
+AccountManagement.xaml;LoginForm.xaml;MainWindow.xaml;OrderManagement.xaml;ProductManagement.xaml;
 
 False
 

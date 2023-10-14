@@ -1,6 +1,5 @@
 ﻿using DataAccess.DAO;
 using DataAccess.DataAccess;
-using DataAccess.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +19,8 @@ namespace ManagerApp
 {
     public partial class LoginForm : Window
     {
+        public static string GlobalUsername = "";
+
         public LoginForm()
         {
             InitializeComponent();
@@ -43,6 +44,7 @@ namespace ManagerApp
                 {
                     if(account.Password == password)
                     {
+                        GlobalUsername = username;
                         MainWindow mainWindow = new MainWindow();
                         mainWindow.Show();
                         Hide();
@@ -57,6 +59,11 @@ namespace ManagerApp
                     MessageBox.Show("Login failed, please try again!", "Login", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

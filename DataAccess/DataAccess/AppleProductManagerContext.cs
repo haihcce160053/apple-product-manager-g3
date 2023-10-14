@@ -18,12 +18,15 @@ namespace DataAccess.DataAccess
         }
 
         public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<AccountType> AccountTypes { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Product> Products { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("server=LAPTOP-85JP501Q;database=AppleProductManager;uid=sa;pwd=Chihai4242;");
             }
         }
@@ -67,29 +70,71 @@ namespace DataAccess.DataAccess
                     .HasMaxLength(20)
                     .HasColumnName("phone");
 
-                entity.Property(e => e.Type)
+                entity.Property(e => e.Type).HasColumnName("type");
+
+                entity.HasOne(d => d.TypeNavigation)
+                    .WithMany(p => p.Accounts)
+                    .HasForeignKey(d => d.Type)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_accounts_account_type");
+            });
+
+            modelBuilder.Entity<AccountType>(entity =>
+            {
+                entity.HasKey(e => e.TypeId);
+
+                entity.ToTable("account_type");
+
+                entity.Property(e => e.TypeId).HasColumnName("type_id");
+
+                entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(10)
-                    .HasColumnName("type");
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.ToTable("order");
+
+                entity.Property(e => e.Orderid).HasColumnName("orderid");
+
+                entity.Property(e => e.Orderdate)
+                    .HasColumnType("date")
+                    .HasColumnName("orderdate");
+
+                entity.Property(e => e.Productid).HasColumnName("productid");
+
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+                entity.Property(e => e.Totalprice)
+                    .HasColumnType("money")
+                    .HasColumnName("totalprice");
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("username");
+
+                entity.HasOne(d => d.UsernameNavigation)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.Username)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_order_accounts");
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.ToTable("products");
 
-                entity.Property(e => e.Id)
+                entity.Property(e => e.Productid)
                     .ValueGeneratedNever()
-                    .HasColumnName("id");
+                    .HasColumnName("productid");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasMaxLength(1000)
                     .HasColumnName("description");
-
-                entity.Property(e => e.Image)
-                    .IsRequired()
-                    .HasMaxLength(1000)
-                    .HasColumnName("image");
 
                 entity.Property(e => e.Name)
                     .IsRequired()

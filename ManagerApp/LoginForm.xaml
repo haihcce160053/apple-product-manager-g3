@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="NAMHAI STORE - LOGIN" Height="330" Width="544"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
         <Label Content="NAMHAI STORE - LOGIN" HorizontalAlignment="Left" Margin="107,24,0,0" VerticalAlignment="Top" FontSize="33" FontWeight="Bold"/>
         <Label Content="Username" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" FontSize="18"/>

@@ -12,10 +12,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="AccountManagement.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="LoginForm.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="OrderManagement.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ProductManagement.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

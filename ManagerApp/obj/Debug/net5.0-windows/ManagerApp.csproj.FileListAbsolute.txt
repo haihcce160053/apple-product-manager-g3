@@ -68,3 +68,9 @@ D:\Project\C#\AppleProductSolution\ManagerApp\bin\Debug\net5.0-windows\BusinessO
 D:\Project\C#\AppleProductSolution\ManagerApp\bin\Debug\net5.0-windows\DataAccess.pdb
 D:\Project\C#\AppleProductSolution\ManagerApp\obj\Debug\net5.0-windows\ManagerApp.csproj.AssemblyReference.cache
 D:\Project\C#\AppleProductSolution\ManagerApp\obj\Debug\net5.0-windows\ManagerApp.csproj.CopyComplete
+D:\Project\C#\AppleProductSolution\ManagerApp\obj\Debug\net5.0-windows\AccountManagement.g.cs
+D:\Project\C#\AppleProductSolution\ManagerApp\obj\Debug\net5.0-windows\OrderManagement.g.cs
+D:\Project\C#\AppleProductSolution\ManagerApp\obj\Debug\net5.0-windows\ProductManagement.g.cs
+D:\Project\C#\AppleProductSolution\ManagerApp\obj\Debug\net5.0-windows\AccountManagement.baml
+D:\Project\C#\AppleProductSolution\ManagerApp\obj\Debug\net5.0-windows\OrderManagement.baml
+D:\Project\C#\AppleProductSolution\ManagerApp\obj\Debug\net5.0-windows\ProductManagement.baml

@@ -1,0 +1,58 @@
+﻿<Window x:Class="ManagerApp.ProductManagement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManagerApp"
+        mc:Ignorable="d"
+        Title="Product Management" Height="800" Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Grid Margin="10,0,0,0">
+        <Label Content="PRODUCT MANAGEMENT" FontSize="33" FontWeight="Bold" HorizontalAlignment="Left" Margin="220,10,0,675"/>
+        <StackPanel Margin="0,66,296,392">
+            <Label Content="Product ID" FontSize="14" RenderTransformOrigin="-0.945,0.606"/>
+            <TextBox x:Name="txtProductId" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Productid, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvProducts}"/>
+            <Label Content="Product Name" FontSize="14"/>
+            <TextBox x:Name="txtProductName" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Name, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvProducts}"/>
+            <Label Content="Description" FontSize="14"/>
+            <TextBox x:Name="txtDescription" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Description, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvProducts}"/>
+            <Label Content="Quantity" FontSize="14" RenderTransformOrigin="0.472,1.889"/>
+            <TextBox x:Name="txtQuantity" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Quantity, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvProducts}"/>
+            <Label Content="Sold" FontSize="14"/>
+            <TextBox x:Name="txtSold" TextWrapping="Wrap" Width="475" Height="22" Text="{Binding Sold, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvProducts}"/>
+            <Label Content="Type" FontSize="14"/>
+            <TextBox x:Name="txtType" TextWrapping="Wrap" Width="474" Height="22" Text="{Binding Type, Mode=OneWay}" DataContext="{Binding SelectedItem, ElementName=lvProducts}"/>
+        </StackPanel>
+        <StackPanel Margin="482,142,6,429">
+            <Button x:Name="btnAdd" Content="Add" Height="30" Width="180" Margin="0,0,0,20" Click="btnAdd_Click"/>
+            <Button x:Name="btnUpdate" Content="Update" Height="30" Width="180" Margin="0,0,0,20" Click="btnUpdate_Click"/>
+            <Button x:Name="btnDelete" Content="Delete" Height="30" Width="180" Margin="0,0,0,20" Click="btnDelete_Click"/>
+            <Button x:Name="btnBack" Content="Back To Menu" Height="30" Width="180" Click="btnBack_Click"/>
+        </StackPanel>
+        <Image HorizontalAlignment="Left" Height="58" Margin="148,3,0,0" VerticalAlignment="Top" Width="74" Source="/apple.png" Stretch="Fill" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="0.46"/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="-0.325"/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Label Content="Search By Product Name:" HorizontalAlignment="Left" Margin="156,392,0,0" VerticalAlignment="Top" Width="175" FontSize="14"/>
+        <TextBox x:Name="txtSearch" HorizontalAlignment="Left" Height="28" Margin="331,393,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" FontSize="14" TextChanged="txtSearch_TextChanged"/>
+        <ListView x:Name="lvProducts" Margin="-12,435,0,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Product ID" Width="65" DisplayMemberBinding="{Binding Path=Productid}"/>
+                    <GridViewColumn Header="Product Name" Width="220" DisplayMemberBinding="{Binding Path=Name}"/>
+                    <GridViewColumn Header="Description" Width="200" DisplayMemberBinding="{Binding Path=Description}"/>
+                    <GridViewColumn Header="Quantity" Width="70" DisplayMemberBinding="{Binding Path=Quantity}"/>
+                    <GridViewColumn Header="Sold" Width="60" DisplayMemberBinding="{Binding Path=Sold}"/>
+                    <GridViewColumn Header="Type" Width="120" DisplayMemberBinding="{Binding Path=Type}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>
