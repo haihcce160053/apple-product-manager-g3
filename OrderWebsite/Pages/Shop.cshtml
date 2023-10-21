@@ -1,0 +1,405 @@
+﻿@page
+@using DataAccess.DataAccess;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.EntityFrameworkCore;
+@model OrderWebsite.Pages.ShopModel;
+@inject AppleProductManagerContext _context;
+@{
+    var cateID = Request.Query["cate"];
+    var isAdd = Request.Query["add"];
+    var temp = TempData["Cadd"] as int?;
+    int quan = 0;
+    string username = HttpContext.Session.GetString("username");
+    Product pro = null;
+    if (int.TryParse(cateID, out var parsedCateID))
+    {
+        pro = _context.Products.FirstOrDefault(u => u.Type == parsedCateID);
+    }
+    if (int.TryParse(isAdd, out var parsedIsAdd))
+    {
+        temp = parsedIsAdd;
+    }
+}
+
+<head>
+    <title>NHStore - Product Listing Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="apple-touch-icon" href="~/img/apple-icon.png">
+    @*     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico"> *@
+
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/templatemo.css">
+    <link rel="stylesheet" href="~/css/custom.css">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="~/css/fontawesome.min.css">
+    <!--
+
+    TemplateMo 559 Zay Shop
+
+    https://templatemo.com/tm-559-zay-shop
+
+    -->
+</head>
+
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                </div>
+                <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand text-success logo h1 align-self-center" href="/Index">
+                NHStore
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div style="margin-left: 35px" class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Contact">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Shop">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <form action="/Search" method="get" style="display: flex; margin: 0;">
+                        <div>
+                            <input type="text" class="form-control" id="inputMobileSearch" name="search" placeholder="Search ...">
+                        </div>
+                        <div style="width: 50px; height: 39px; border-radius: 0px 5px 5px 0px; background-color: #212934; margin-left: -1px; display: flex; justify-content: center; align-items: center;" class="input-group-text">
+                            <button type="submit" id="searchButton" style="border: none; background-color: #212934;">
+                                <i style="color: white;" class="fa fa-fw fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div style="margin-left: 50px; display:flex;justify-content:center;align-items:center">
+                        <div>
+                            <a class="nav-icon position-relative text-decoration-none" href="/Carts?uid=@username">
+                                <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                                @{
+                                    if (username != "")
+                                    {
+                                        foreach (var item in Model.Carts.Where(p => p.Username == username))
+                                        {
+                                            quan += item.Quantity;
+                                        }
+                                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">@quan</span>
+                                    }
+                                }
+                            </a>
+                        </div>
+                        @{
+                            @if (username != null)
+                            {
+                                <div style="display: flex;justify-content: center;align-items: center;" class="user-dropdown" id="userDropdown" data-toggle="dropdown">
+                                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                                        <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                                    </a>
+                                    <div style="display: flex;justify-content: center;align-items: center;" class="dropdown">
+                                        <a style="text-decoration: none;cursor: pointer;margin-left: -17px;" class="" aria-haspopup="true" aria-expanded="false">
+                                            @username <i class="fa fa-fw fa-caret-down"></i>
+                                        </a>
+                                        <div style="margin-left: -40px;" class="dropdown-menu" aria-labelledby="userDropdown">
+                                            <a class="dropdown-item" href="#" id="updateProfile" >Update Profile</a>
+                                            <a class="dropdown-item" href="#" id="orderHistory" >View Order History</a>
+                                            <a class="dropdown-item" href="/Logout" id="logoutLink">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            else
+                            {
+                                <div>
+                                    <a id="authen" href="/Login" style="color: #212934; margin-left: 10px; text-decoration: none;font-family: 'Roboto', sans-serif;">Login</a>
+                                </div>
+                                <div style="font-family: 'Roboto', sans-serif;color: #212934;">/</div>
+                                <div>
+                                    <a id="authen" href="/SignUp" style="color: #212934; text-decoration: none;font-family: 'Roboto', sans-serif;">Sign up</a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </nav>
+    <!-- Close Header -->
+    <!-- Modal -->
+    <!-- Start Content -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-3">
+                <ul class="list-unstyled templatemo-accordion">
+                    <li class="pb-3">
+                        <a id="CateText" class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+                            Categories
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                        <ul class="collapse show list-unstyled pl-3">
+                            <li><a class="text-decoration-none" href="/Shop?cate=0">All</a></li>
+                            @{
+                                foreach (var item in Model.Category)
+                                {
+                                    <li><a class="text-decoration-none" href="/Shop?cate=@item.TypeId">@item.TypeName</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="row">
+                    @{
+                        if (pro != null)
+                        {
+                            foreach (var item in Model.Products.Where(p => p.Type == parsedCateID))
+                            {
+                                <div class="col-md-4">
+                                    <a href="/ViewDetails?id=@item.ProductId">
+                                        <div style="cursor: pointer" class="card mb-4 product-wap rounded-0">
+                                            <div class="card rounded-0">
+                                                <img class="card-img rounded-0 img-fluid" src="@item.Image">
+                                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                                </div>
+                                            </div>
+                                            <div style="display: flex;justify-content: space-around;align-items: center;" class="card-body">
+                                                <a style="margin: 0" href="/ViewDetails?id=@item.ProductId" class="h3 text-decoration-none align_name">
+                                                    <p class="pName" style="font-weight: bold;font-size: 20px">@item.Name</p>
+                                                </a>
+                                                <p style="color: red;font-weight:500" class="text-center mb-0 pPrice">$@string.Format("{0:0}", item.Price)</p>
+                                            </div>
+                                            <form method="post" asp-page="Carts">
+                                                <input type="hidden" name="atcUsername" value="@username" />
+                                                <input type="hidden" name="atcProid" value="@item.ProductId" />
+                                                <input type="hidden" name="atcQuantity" value="1" />
+                                                <input type="hidden" name="atcTotalprice" value="@item.Price" />
+                                                <input type="hidden" name="url" id="url" value="" />
+                                                <div style="display: flex; justify-content:center">
+                                                    <button type="submit" id="addToCartButton" class="btnATC" style="width: 240px; border-radius: 5px; font-weight: 500;background-color: #0f0f0f0f; text-decoration: none; display: flex; height: 30px; align-items: center; justify-content: center; border: none; cursor: pointer;">
+                                                        Add To Cart
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        }
+                        else if (pro == null || parsedCateID == 0)
+                        {
+                            foreach (var item in Model.Products)
+                            {
+                                <div class="col-md-4">
+                                    <a href="/ViewDetails?id=@item.ProductId">
+                                        <div style="cursor: pointer" class="card mb-4 product-wap rounded-0">
+                                            <div class="card rounded-0">
+                                                <img class="card-img rounded-0 img-fluid" src="@item.Image">
+                                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                                </div>
+                                            </div>
+                                            <div style="display: flex;justify-content: space-around;align-items: center;" class="card-body">
+                                                <a style="margin: 0" href="/ViewDetails?id=@item.ProductId" class="h3 text-decoration-none align_name">
+                                                    <p class="pName" style="font-weight: bold;font-size: 20px">@item.Name</p>
+                                                </a>
+                                                <p style="color: red;font-weight:500" class="text-center mb-0 pPrice">$@string.Format("{0:0}", item.Price)</p>
+                                            </div>
+                                            <form method="post" asp-page="Carts">
+                                                <input type="hidden" name="atcUsername" value="@username" />
+                                                <input type="hidden" name="atcProid" value="@item.ProductId" />
+                                                <input type="hidden" name="atcQuantity" value="1" />
+                                                <input type="hidden" name="atcTotalprice" value="@item.Price" />
+                                                <input type="hidden" name="url" id="url" value="" />
+                                                <div style="display: flex; justify-content:center">
+                                                    <button type="submit" id="addToCartButton" class="btnATC" style="width: 240px; border-radius: 5px; font-weight: 500;background-color: #0f0f0f0f; text-decoration: none; display: flex; height: 30px; align-items: center; justify-content: center; border: none; cursor: pointer;">
+                                                        Add To Cart
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <!-- End Content -->
+    <!-- Start Brands -->
+    <!--End Brands-->
+    <!-- Start Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">NHStore</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            123 Consectetur at ligula 10660
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/Shop?cate=1">Apple iPhone</a></li>
+                        <li><a class="text-decoration-none" href="/Shop?cate=2">Apple Macbook</a></li>
+                        <li><a class="text-decoration-none" href="/Shop?cate=3">Apple Airpod</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/Index">Home</a></li>
+                        <li><a class="text-decoration-none" href="/Shop">Shopping</a></li>
+                        <li><a class="text-decoration-none" href="/Contact">About Us</a></li>
+                        <li><a class="text-decoration-none" href="/Contact">Contact</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <label class="sr-only" for="subscribeEmail">Email address</label>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control border-light" id="subscribeEmail" placeholder="Email address">
+                        <div class="input-group-text btn-success text-light">Subscribe</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2021 Company Name
+                            | Designed by <a rel="sponsored" href="https://templatemo.com" target="_blank">TemplateMo</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @{
+            if (temp == 1)
+            {
+                <div class="popup-container">
+                    <div style="width: 250px;height: 150px;display: flex;flex-direction: column;justify-content: space-evenly;" class="popup">
+                        <p style="color: green;font-weight: 500;font-size: 20px;">Add Success</p>
+                        <button style="margin: auto 0 auto;background-color: green;" onclick="closePopup()">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+
+    </footer>
+    <!-- End Footer -->
+    <!-- Start Script -->
+    <script src="~/js/jquery-1.11.0.min.js"></script>
+    <script src="~/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="~/js/templatemo.js"></script>
+    <script src="~/js/custom.js"></script>
+    <!-- End Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var currentPageUrl = window.location.href;
+            var urlPage = document.getElementsByName("url");
+            for (var i = 0; i < urlPage.length; i++) {
+                urlPage[i].value = currentPageUrl;
+            }
+        });
+        $(document).ready(function () {
+            $("#logoutLink").click(function () {
+                window.location.href = "/Logout";
+            });
+            $("#orderHistory").click(function () {
+                window.location.href = "/OrderHistory";
+            });
+            $("#updateProfile").click(function () {
+                window.location.href = "/UpdateProfile";
+            });
+        });
+    </script>    
+</body>

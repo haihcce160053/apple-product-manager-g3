@@ -1,0 +1,40 @@
+﻿@page
+@model OrderWebsite.Pages.LoginModel
+@{
+}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form | CodingLab</title>
+    <link rel="stylesheet" href="~/css/AuthenCustom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <div class="title" style="background-color: #767676"><span>Login</span></div>
+            <form method="post">
+                <div style="margin-top: 20px" class="row">
+                    <i style="background-color: #767676" class="fas fa-user"></i>
+                    <input type="text" placeholder="Email or Phone" asp-for="@Model.Username" required>
+                </div>
+                <div style="margin-bottom: 35px" class="row">
+                    <i style="background-color: #767676" class="fas fa-lock"></i>
+                    <input type="password" placeholder="Password" asp-for="@Model.Password" required>
+                </div>
+                <div class="row button">
+                    <input style="background-color: #767676;border: none" type="submit" value="Login">
+                </div>
+                <div class="signup-link">Not a member? <a style="color: #767676" href="/SignUp">Signup now</a></div>
+            </form>
+        </div>
+        <span>
+            @if (!string.IsNullOrEmpty(Model.Msg))
+            {
+                <div class="errAnou" style="color: red">@Model.Msg</div>
+            }
+        </span>
+    </div>
+
+</body>

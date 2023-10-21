@@ -19,6 +19,7 @@ namespace DataAccess.DataAccess
 
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<AccountType> AccountTypes { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
@@ -93,6 +94,26 @@ namespace DataAccess.DataAccess
                     .IsRequired()
                     .HasMaxLength(10)
                     .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<Cart>(entity =>
+            {
+                entity.ToTable("cart");
+
+                entity.Property(e => e.CartId).HasColumnName("cart_id");
+
+                entity.Property(e => e.ProductId).HasColumnName("product_id");
+
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+                entity.Property(e => e.Totalprice)
+                    .HasColumnType("money")
+                    .HasColumnName("totalprice");
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("username");
             });
 
             modelBuilder.Entity<Order>(entity =>

@@ -1,0 +1,147 @@
+﻿@page
+@model OrderWebsite.Pages.SignUpModel
+@{
+    var isSuccess = Request.Query["success"];
+    var isErr = Request.Query["err"];
+    int err = 0;
+    int temp = 0;
+    if (int.TryParse(isSuccess, out var parsedIsSuccess))
+    {
+        temp = parsedIsSuccess;
+    }
+    if (int.TryParse(isErr, out var parsedIsErr))
+    {
+        err = parsedIsErr;
+    }
+}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form | CodingLab</title>
+    <link rel="stylesheet" href="~/css/AuthenCustom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+</head>
+<body>
+    <div style="margin: 10px auto" class="container">
+        <div class="wrapper">
+            <div class="title" style="background-color: #767676"><span>Sign Up</span></div>
+            <form method="post" onsubmit="return validatePassword();">
+                <div style="" class="row">
+                    <i style="background-color: #767676" class="fas fa-user"></i>
+                    <input type="text" id="txtusername" placeholder="Username" asp-for="user.Username" required>
+                    <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="userNameError"></span>
+                </div>
+                <div style="" class="row">
+                    <i style="background-color: #767676" class="fas fa-lock"></i>
+                    <input type="password" placeholder="Password" asp-for="user.Password" required>
+                    <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="passwordError"></span>
+                </div>
+                <div style="" class="row">
+                    <i style="background-color: #767676" class="fas fa-lock"></i>
+                    <input type="password" placeholder="Confirm Password" id="confirmPassword" required>
+                    <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="confirmPasswordError"></span>
+                </div>
+                <div style="" class="row">
+                    <i style="background-color: #767676" class="fas fa-user"></i>
+                    <input type="text" id="txtFullname" placeholder="FullName" asp-for="user.Fullname" required>
+                    <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="fullNameError"></span>
+                </div>
+                <div style="" class="row">
+                    <i style="background-color: #767676" class="fas fa-phone"></i>
+                    <input type="text" id="txtphone" placeholder="Phone" asp-for="user.Phone" required>
+                    <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="phoneError"></span>
+                </div>
+                <div style="" class="row">
+                    <i style="background-color: #767676" class="fas fa-envelope"></i>
+                    <input type="text" id="txtEmail" placeholder="Email" asp-for="user.Email" required>
+                    <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="emailError"></span>
+                </div>
+                <div style="" class="row">
+                    <i style="background-color: #767676" class="fas fa-map-marker-alt"></i>
+                    <input type="text" id="txtAddress" placeholder="Address" asp-for="user.Address" required>
+                    <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="addressError"></span>
+                </div>
+                <input type="text" placeholder="" value="3" asp-for="user.Type" hidden>
+                <div class="row button">
+                    <input style="background-color: #767676;border: none" type="submit" value="Sign Up">
+                </div>
+                <div class="signup-link">Already have an account? <a style="color: #767676" href="/Login">Login now</a></div>
+            </form>
+
+        </div>
+    </div>
+
+    @if (temp == 1)
+    {
+        <div class="popup-container">
+            <div style="width: 250px;height: 150px;display: flex;flex-direction: column;justify-content: space-evenly;" class="popup">
+                <p style="color: green;font-weight: 500;font-size: 20px;">Sign Up Success</p>
+                <button style="margin: 25px auto 0 auto;background-color: green;" onclick="closePopup()">
+                    OK
+                </button>
+            </div>
+        </div>
+    }
+    @if (err == 1)
+    {
+        <div class="popup-container">
+            <div style="width: 280px;height: 150px;display: flex;flex-direction: column;justify-content: space-evenly;" class="popup">
+                <p style="color: red;font-weight: 500;font-size: 20px;">Sign Up Fail! <br> Username or Email already exist</p>
+                <button style="margin: 25px auto 0 auto;background-color: red;" onclick="closePopup()">
+                    OK
+                </button>
+            </div>
+        </div>
+    }
+
+    <script>
+        function closePopup() {
+            var popupContainer = document.querySelector(".popup-container");
+            popupContainer.style.display = "none";
+        }
+        function validatePassword() {
+            function setError(element, message) {
+                element.textContent = message;
+            }
+
+            var username = document.getElementById('txtusername').value.trim();
+            var password = document.querySelector('input[type="password"]').value.trim();
+            var confirmPassword = document.getElementById('confirmPassword').value.trim();
+            var fullName = document.getElementById('txtFullname').value.trim();
+            var phone = document.getElementById('txtphone').value.trim();
+            var email = document.getElementById('txtEmail').value.trim();
+            var address = document.getElementById('txtAddress').value.trim();
+
+            var usernameError = document.getElementById('userNameError');
+            var passwordError = document.getElementById('passwordError');
+            var confirmPasswordError = document.getElementById('confirmPasswordError');
+            var fullNameError = document.getElementById('fullNameError');
+            var phoneError = document.getElementById('phoneError');
+            var emailError = document.getElementById('emailError');
+            var addressError = document.getElementById('addressError');
+
+            var hasErrors = false;
+
+            setError(usernameError, username === "" ? "Invalid Username" : "");
+            setError(passwordError, password === "" || password.length < 6 || password.length > 20 ? "Invalid Password (6-20 characters)" : "");
+            setError(confirmPasswordError, password !== confirmPassword ? "Passwords do not match" : "");
+            setError(fullNameError, fullName === "" ? "Invalid FullName" : "");
+
+            var phonePattern = /^[0][0-9]{9}$/;
+            setError(phoneError, !phonePattern.test(phone) ? "Invalid Phone (ex: 0123456789)" : "");
+
+            var emailPattern = /^([^@@]+)@@(gmail\.com|fpt\.edu\.vn)$/;
+            setError(emailError, !emailPattern.test(email) ? "Invalid Email (ex: abc@gmail.com)" : "");
+
+            setError(addressError, address === "" ? "Invalid Address" : "");
+
+            if (usernameError.textContent || passwordError.textContent || confirmPasswordError.textContent || fullNameError.textContent || phoneError.textContent || emailError.textContent || addressError.textContent) {
+                hasErrors = true;
+            }
+
+            return !hasErrors;
+        }
+    </script>
+
+</body>

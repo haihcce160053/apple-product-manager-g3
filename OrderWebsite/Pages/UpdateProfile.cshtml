@@ -1,0 +1,441 @@
+﻿@page
+@using DataAccess.DataAccess;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.EntityFrameworkCore;
+@model OrderWebsite.Pages.UpdateProfileModel
+@inject AppleProductManagerContext _context
+@{
+    string username = HttpContext.Session.GetString("username");
+    var sc = TempData["success"] as int?;
+    int quan = 0;
+}
+
+<head>
+    <title>NHStore - Contact</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="~/img/apple-icon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/img/favicon.ico">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="~/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <!-- Load map styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/templatemo.css">
+    <link rel="stylesheet" href="~/css/custom.css">
+    <!--
+
+    TemplateMo 559 Zay Shop
+
+    https://templatemo.com/tm-559-zay-shop
+
+    -->
+    <style>
+        #example_wrapper {
+            margin: 100px auto 500px auto;
+            width: 80%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:Group3SE1606@fpt.edu.vn">Group3SE1606@fpt.edu.vn</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:0845678039">0845678039</a>
+                </div>
+                <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand text-success logo h1 align-self-center" href="/Index">
+                NHStore
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Contact">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Shop">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <form action="/Search" method="get" style="display: flex; margin: 0;">
+                        <div>
+                            <input type="text" class="form-control" id="inputMobileSearch" name="search" placeholder="Search ...">
+                        </div>
+                        <div style="width: 50px; height: 39px; border-radius: 0px 5px 5px 0px; background-color: #212934; margin-left: -1px; display: flex; justify-content: center; align-items: center;" class="input-group-text">
+                            <button type="submit" id="searchButton" style="border: none; background-color: #212934;">
+                                <i style="color: white;" class="fa fa-fw fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div style="margin-left: 50px; display:flex;justify-content:center;align-items:center">
+                        <div>
+                            <a class="nav-icon position-relative text-decoration-none" href="/Carts?uid=@username">
+                                <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                                @{
+                                    if (username != "")
+                                    {
+                                        foreach (var item in Model.Carts.Where(p => p.Username == username))
+                                        {
+                                            quan += item.Quantity;
+                                        }
+                                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">@quan</span>
+                                    }
+                                }
+                            </a>
+                        </div>
+                        @{
+                            @if (username != null)
+                            {
+                                <div style="display: flex;justify-content: center;align-items: center;" class="user-dropdown" id="userDropdown" data-toggle="dropdown">
+                                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                                        <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                                    </a>
+                                    <div style="display: flex;justify-content: center;align-items: center;" class="dropdown">
+                                        <a style="text-decoration: none;cursor: pointer;margin-left: -17px;" class="" aria-haspopup="true" aria-expanded="false">
+                                            @username <i class="fa fa-fw fa-caret-down"></i>
+                                        </a>
+                                        <div style="margin-left: -40px;" class="dropdown-menu" aria-labelledby="userDropdown">
+                                            <a class="dropdown-item" href="#" id="updateProfile">Update Profile</a>
+                                            <a class="dropdown-item" href="#" id="orderHistory">View Order History</a>
+                                            <a class="dropdown-item" href="/Logout" id="logoutLink">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <a id="authen" href="/Login" style="color: #212934; margin-left: 10px; text-decoration: none;font-family: 'Roboto', sans-serif;">Login</a>
+                                </div>
+                                <div style="font-family: 'Roboto', sans-serif;color: #212934;">/</div>
+                                <div>
+                                    <a id="authen" href="/SignUp" style="color: #212934; text-decoration: none;font-family: 'Roboto', sans-serif;">Sign up</a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <div class="container-fluid bg-light py-5">
+        <div class="col-md-6 m-auto text-center">
+            <h1 class="h1">Update Profile</h1>
+        </div>
+    </div>
+
+    @{
+        var userInfo = _context.Accounts.FirstOrDefault(p => p.Username == username);  
+    }
+    <form method="post" onsubmit="return validatePassword()" style="width: 40%;margin: 40px auto 50px auto">
+        <div class="form-group row">
+            <label for="txtusername" class="col-2 col-form-label">Username</label>
+            <div class="col-10">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-address-book"></i>
+                        </div>
+                    </div>
+                    <input readonly="true" id="txtusername" name="txtusername" asp-for="AccountO.Username" value="@userInfo.Username" type="text" class="form-control">
+
+                </div>
+                <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="userNameError"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="txtpassword" class="col-2 col-form-label">Password</label>
+            <div class="col-10">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-adjust"></i>
+                        </div>
+                    </div>
+                    <input id="txtpassword" name="txtpassword" asp-for="AccountO.Password" value="@userInfo.Password" type="text" class="form-control">
+
+                </div>
+                <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="passwordError"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="txtFullname" class="col-2 col-form-label">FullName</label>
+            <div class="col-10">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-address-book"></i>
+                        </div>
+                    </div>
+                    <input id="txtFullname" name="txtFullname" asp-for="AccountO.Fullname" value="@userInfo.Fullname" type="text" class="form-control">
+
+                </div>
+                <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="fullNameError"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="txtphone" class="col-2 col-form-label">Phone</label>
+            <div class="col-10">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-phone-square"></i>
+                        </div>
+                    </div>
+                    <input id="txtphone" name="txtphone" asp-for="AccountO.Phone" value="@userInfo.Phone" type="text" class="form-control">
+
+                </div>
+                <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="phoneError"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="txtEmail" class="col-2 col-form-label">Email</label>
+            <div class="col-10">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                    </div>
+                    <input id="txtEmail" name="txtEmail" asp-for="AccountO.Email" value="@userInfo.Email" type="text" class="form-control">
+
+                </div>
+                <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="emailError"></span>
+            </div>
+            
+        </div>
+        <div class="form-group row">
+            <label for="txtAddress" class="col-2 col-form-label">Address</label>
+            <div class="col-10">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-credit-card-alt"></i>
+                        </div>
+                    </div>
+                    <input id="txtAddress" name="txtAddress" asp-for="AccountO.Address" value="@userInfo.Address" type="text" class="form-control">
+
+                </div>
+                <span style="margin-top: 5px; margin-left:5px;margin-bottom:5px;color:red;font-size:14px" class="error-message" id="addressError"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-2 col-10">
+                <button style="margin-left: 100px;width: 200px;background-color: #868686;border: none;" name="submit" type="submit" class="btn btn-primary">
+                    Update
+                </button>
+            </div>
+        </div>
+    </form>
+   
+
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">NHStore</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            123 Consectetur at ligula 10660
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/Shop?cate=1">Apple iPhone</a></li>
+                        <li><a class="text-decoration-none" href="/Shop?cate=2">Apple Macbook</a></li>
+                        <li><a class="text-decoration-none" href="/Shop?cate=3">Apple Airpod</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/Index">Home</a></li>
+                        <li><a class="text-decoration-none" href="/Shop">Shopping</a></li>
+                        <li><a class="text-decoration-none" href="/Contact">About Us</a></li>
+                        <li><a class="text-decoration-none" href="/Contact">Contact</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <label class="sr-only" for="subscribeEmail">Email address</label>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control border-light" id="subscribeEmail" placeholder="Email address">
+                        <div class="input-group-text btn-success text-light">Subscribe</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2021 Company Name
+                            | Designed by <a rel="sponsored" href="https://templatemo.com" target="_blank">TemplateMo</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @{
+            if (sc == 1)
+            {
+                <div class="popup-container">
+                    <div style="width: 250px;height: 150px;display: flex;flex-direction: column;justify-content: space-evenly;" class="popup">
+                        <p style="color: green;font-weight: 500;font-size: 20px;">Update Success</p>
+                        <button style="margin: auto 0 auto;background-color: green;" onclick="closePopup()">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            }
+        }        
+
+    </footer>
+    <!-- End Footer -->
+    <!-- Start Script -->
+    <script src="~/js/jquery-1.11.0.min.js"></script>
+    <script src="~/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="~/js/templatemo.js"></script>
+    <script src="~/js/js/custom.js"></script>
+
+    <!-- End Script -->
+    <script>
+        new DataTable('#example');
+        $(document).ready(function () {
+            $("#logoutLink").click(function () {
+                window.location.href = "/Logout";
+            });
+            $("#orderHistory").click(function () {
+                window.location.href = "/OrderHistory";
+            });
+            $("#updateProfile").click(function () {
+                window.location.href = "/UpdateProfile";
+            });
+        });
+        function closePopup() {
+            var popupContainer = document.querySelector(".popup-container");
+            popupContainer.style.display = "none";
+        }
+        function validatePassword() {
+            function setError(element, message) {
+                element.textContent = message;
+            }
+
+            var username = document.getElementById('txtusername').value.trim();
+            var password = document.getElementById('txtpassword').value.trim();
+            var fullName = document.getElementById('txtFullname').value.trim();
+            var phone = document.getElementById('txtphone').value.trim();
+            var email = document.getElementById('txtEmail').value.trim();
+            var address = document.getElementById('txtAddress').value.trim();
+
+            var usernameError = document.getElementById('userNameError');
+            var passwordError = document.getElementById('passwordError');
+            var fullNameError = document.getElementById('fullNameError');
+            var phoneError = document.getElementById('phoneError');
+            var emailError = document.getElementById('emailError');
+            var addressError = document.getElementById('addressError');
+
+            var hasErrors = false;
+
+            setError(usernameError, username === "" ? "Invalid Username" : "");
+            setError(passwordError, password === "" || password.length < 6 || password.length > 20 ? "Invalid Password (6-20 characters)" : "");
+            setError(fullNameError, fullName === "" ? "Invalid FullName" : "");
+
+            var phonePattern = /^[0][0-9]{9}$/;
+            setError(phoneError, !phonePattern.test(phone) ? "Invalid Phone (ex: 0123456789)" : "");
+
+            var emailPattern = /^([^@@]+)@@(gmail\.com|fpt\.edu\.vn)$/;
+            setError(emailError, !emailPattern.test(email) ? "Invalid Email (domain:@@gmail.com||@@fpt.edu.vn)" : "");
+
+            setError(addressError, address === "" ? "Invalid Address" : "");
+
+            if (usernameError.textContent || passwordError.textContent || fullNameError.textContent || phoneError.textContent || emailError.textContent || addressError.textContent) {
+                hasErrors = true;
+            }
+
+            return !hasErrors;
+        }
+    </script>
+</body>

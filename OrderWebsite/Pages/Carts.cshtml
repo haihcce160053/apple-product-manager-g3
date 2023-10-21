@@ -1,0 +1,268 @@
+﻿@page
+@using DataAccess.DataAccess;
+@using Microsoft.EntityFrameworkCore;
+@using Microsoft.AspNetCore.Http;
+@model OrderWebsite.Pages.CartsModel
+@inject AppleProductManagerContext _context;
+@{
+    string uID = Request.Query["uid"];
+    var addPro = Request.Query["id"];
+    var re = TempData["s"] as int?;
+    var ors = TempData["ors"] as int?;
+    int quan = 0;
+    int oRs = 0;
+    decimal total = 0;
+    Cart cart = null;
+    Product pro = null;
+    if (uID != "")
+    {
+        cart = _context.Carts.FirstOrDefault(u => u.Username.Equals(uID));
+    }
+    if (int.TryParse(uID, out var parsedCateID))
+    {
+        pro = _context.Products.FirstOrDefault(u => u.Type == parsedCateID);
+    }
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/CartStyle.css" />
+</head>
+<body style="display: flex;justify-content: center;align-items: center;background-color: #bfbfbf">
+    <section class="" style="background-color: #bfbfbf;">
+        <div style="" class="container">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-12">
+                    <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                        <div class="card-body p-0">
+                            <div class="row g-0">
+                                <div style="width: 727.350px;" class="col-lg-8">
+                                    <div class="p-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-5">
+                                            <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                                        </div>
+                                        @{
+                                            if (cart != null)
+                                            {
+                                                foreach (var cartItem in Model.CartsL.Where(c => c.Username.Equals(uID)))
+                                                {
+                                                    var product = Model.Products.FirstOrDefault(p => p.ProductId == cartItem.ProductId);
+                                                    if (product != null)
+                                                    {
+                                                        <hr class="my-4">
+                                                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                            <div class="col-md-2 col-lg-2 col-xl-2">
+                                                                <img src="@product.Image"
+                                                                     class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                                            </div>
+                                                            <div class="col-md-3 col-lg-3 col-xl-3">
+                                                                <h6 class="text-muted"></h6>
+                                                                <h6 class="text-black mb-0">@product.Name</h6>
+                                                            </div>
+                                                            <div style="justify-content: center;align-items: center;" class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                                                <li style="cursor: pointer" class="btn-minus list-inline-item">
+                                                                    <form style="margin: 0" method="post" asp-page="Carts">
+                                                                        <input type="hidden" name="atcUsername" value="@uID" />
+                                                                        <input type="hidden" name="atcProid" value="@product.ProductId" />
+                                                                        <input type="hidden" name="atcQuantity" value="1" />
+                                                                        <input type="hidden" name="atcTotalprice" value="@product.Price" />
+                                                                        <input type="hidden" name="urlMinus" id="urlMinus" />
+                                                                        <input type="hidden" name="cca" id="cca" value="true" />
+                                                                        <button type="submit" style="width: 10px; height: 20px; display: flex; justify-content: center; align-items: center; background-color: #b6b6b6; border: none;" class="btn btn-success">-</button>
+                                                                    </form>
+                                                                </li>
+                                                                <li style="font-size: 16px;width: 20px;height: 20px;display: flex;justify-content: center;align-items: center;font-weight: 500;" class="var-value list-inline-item badge">
+                                                                    @cartItem.Quantity
+                                                                </li>
+                                                                <li style="cursor:pointer" class="btn-plus list-inline-item">
+                                                                    <form style="margin: 0" method="post" asp-page="Carts">
+                                                                        <input type="hidden" name="atcUsername" value="@uID" />
+                                                                        <input type="hidden" name="atcProid" value="@product.ProductId" />
+                                                                        <input type="hidden" name="atcQuantity" value="1" />
+                                                                        <input type="hidden" name="atcTotalprice" value="@product.Price" />
+                                                                        <input type="hidden" name="urlPlus" id="urlPlus" />
+                                                                        <input type="hidden" name="cca" id="cca" value="true" />
+                                                                        <button type="submit" style="width: 10px;height: 20px;display: flex;justify-content: center;align-items: center;background-color: #b6b6b6;border: none;" class="btn btn-success">+</button>
+                                                                    </form>
+                                                                </li>
+                                                            </div>
+                                                            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                                <h6 class="mb-0">$@string.Format("{0:0}", product.Price)</h6>
+                                                            </div>
+                                                            <form method="post" asp-page="DeleteProFromCart">
+                                                                <input type="hidden" name="pid" value="@product.ProductId" />
+                                                                <input type="hidden" name="user" value="@uID" />
+                                                                <button type="submit" style="margin-top: 20px;border: none; background: none; cursor: pointer;">
+                                                                    <i class="fas fa-times"></i>
+                                                                </button>
+                                                            </form>
+
+
+
+
+                                                        </div>
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <h1 style="position: absolute;top: 200px;font-size: 30px;">
+                                                    You haven't added any products yet.
+                                                </h1>
+                                            }
+                                        }
+
+                                        <div class="pt-5">
+                                            <h6 class="mb-0">
+                                                <a style="bottom: 30px;position: absolute;color: black;" class="btnBack-hold" href="/Shop" class="text-body">
+                                                    <i style="margin-right: 5px;color: black;" class="fas fa-long-arrow-alt-left me-2"></i>Back to shop
+                                                </a>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 bg-grey">
+                                    @{
+                                        foreach (var cartItem in Model.CartsL.Where(c => c.Username.Equals(uID)))
+                                        {
+                                            var product = Model.Products.FirstOrDefault(p => p.ProductId == cartItem.ProductId);
+                                            if (product != null)
+                                            {
+                                                quan += cartItem.Quantity;
+                                                total += product.Price * cartItem.Quantity;
+                                            }
+                                        }
+                                    }
+                                    <div class="p-5">
+                                        <h3 class="fw-bold mt-2 pt-1">Summary</h3>
+
+                                        <hr class="my-4">
+
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <h5 class="text-uppercase">Quantity</h5>
+                                            <h5>@quan</h5>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <h5 class="text-uppercase">Sub Total</h5>
+                                            <h5>$@string.Format("{0:0}", total)</h5>
+                                        </div>
+                                        <hr class="my-4">
+
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="text-uppercase">Total price</h5>
+                                            <h5>$@string.Format("{0:0}", total)</h5>
+                                        </div>
+                                        <hr class="my-4">
+
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <h5 style="margin: auto;" class="text-uppercase">Ship Address</h5>
+                                        </div>
+                                        @{
+                                            if (total > 0)
+                                            {
+                                                <form method="post" asp-page="CheckOut" onsubmit="return validatePassword()">
+                                                    <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+                                                        <input style="width: 350px;border: none;margin-top: -10px;height: 35px;" type="text" name="shipAdd" id="shipAdd" />
+                                                        <span style="margin-top: 5px; margin-left:5px;margin-bottom:40px;color:red;font-size:17px" class="error-message" id="addErr"></span>
+                                                    </div>
+                                                    <input type="hidden" name="url" id="url" />
+                                                    <button type="submit" class="btn btn-dark btn-block btn-lg"
+                                                            data-mdb-ripple-color="dark">
+                                                        Check Out
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                    <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+                                                        <input style="width: 350px;border: none;margin-top: -10px;height: 35px;" type="text" name="shipAdd" id="shipAdd" />
+                                                        <span style="margin-top: 5px; margin-left:5px;margin-bottom:40px;color:red;font-size:17px" class="error-message" id="addErr"></span>
+                                                    </div>
+                                                    <input type="hidden" name="url" id="url" />
+                                                    <button class="btn btn-dark btn-block btn-lg"
+                                                            data-mdb-ripple-color="dark">
+                                                        Check Out
+                                                    </button>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @{
+        if (oRs == 1)
+        {
+            <div class="popup-container">
+                <div style="width: 250px;height: 150px;display: flex;flex-direction: column;justify-content: space-evenly;" class="popup">
+                    <p style="color: green;font-weight: 500;font-size: 20px;">Order Success</p>
+                    <button style="margin: auto 0 auto;background-color: green;" onclick="closePopup()">
+                        OK
+                    </button>
+                </div>
+            </div>
+        }
+        if (ors == 2)
+        {
+            <div class="popup-container">
+                <div style="width: 250px;height: 150px;display: flex;flex-direction: column;justify-content: space-evenly;" class="popup">
+                    <p style="color: red;font-weight: 500;font-size: 20px;">Out Of Stock <br> (Remaining: @re)</p>
+                    <button style="margin: auto 0 auto;background-color: red;" onclick="closePopup()">
+                        OK
+                    </button>
+                </div>
+            </div>
+        }
+    }
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="~/js/jquery-1.11.0.min.js"></script>
+    <script src="~/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/templatemo.js"></script>
+    <script src="~/js/Cart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var currentPageUrl = window.location.href;
+            var urlPlusInputs = document.getElementsByName("urlPlus");
+            var urlMinusInputs = document.getElementsByName("urlMinus");
+            for (var i = 0; i < urlMinusInputs.length; i++) {
+                urlMinusInputs[i].value = currentPageUrl;
+            }
+            for (var i = 0; i < urlPlusInputs.length; i++) {
+                urlPlusInputs[i].value = currentPageUrl;
+            }
+            document.getElementById("url").value = currentPageUrl;
+        });
+
+        function validatePassword() {
+            function setError(element, message) {
+                element.textContent = message;
+            }
+
+            var add = document.getElementById('shipAdd').value.trim();
+            var addErr = document.getElementById('addErr');
+            var hasErrors = false;
+
+            if (!add) {
+                setError(addErr, "Invalid Address");
+                hasErrors = true;
+            } else {
+                setError(addErr, "");
+            }
+
+            return !hasErrors;
+        }
+    </script>
+</body>
