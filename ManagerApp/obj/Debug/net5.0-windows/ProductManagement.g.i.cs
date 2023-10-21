@@ -149,7 +149,7 @@ namespace ManagerApp {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ManagerApp;component/productmanagement.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ManagerApp;V1.0.0.0;component/productmanagement.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\ProductManagement.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
